@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>💌</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background-image: url("bg.image - Copy.jpg");
+  background-repeat: repeat;
+  background-size: 300px;
+  animation: moveBg 40s linear infinite;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+@keyframes moveBg {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 1000px; }
+}
+
+/* ===== HỘP ===== */
+.box {
+  background: rgba(255,255,255,0.9);
+  padding: 35px 45px;
+  border-radius: 25px;
+  text-align: center;
+  z-index: 10;
+  animation: pop 0.4s ease;
+  position: relative;
+}
+
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.shake {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+/* ===== NÚT ===== */
+.btn {
+  padding: 12px 28px;
+  margin: 10px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.start {
+  background: #ffb6c1;
+  color: white;
+  font-size: 18px;
+}
+
+.yes {
+  background: pink;
+  color: white;
+}
+
+.no {
+  background: #ccc;
+  position: absolute;
+}
+
+/* ===== TIM ===== */
+.heart {
+  position: absolute;
+  bottom: -20px;
+  animation: fly 4s linear forwards;
+}
+
+@keyframes fly {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100vh) scale(1.6);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="box" id="box">
+  <h2>✨ BẤM VÀO ✨</h2>
+  <button class="btn start" onclick="start()">Bấm nè 💌</button>
+</div>
+
+<audio id="music" src="music.mp3" loop></audio>
+
+<script>
+let heartInterval;
+const hearts = ["💖","💕","💗","💘"];
+
+function start() {
+  document.getElementById("music").play().catch(()=>{});
+
+  document.getElementById("box").innerHTML = `
+    <h2>Bạn có thích tôi không? 🥺</h2>
+    <button class="btn yes" onclick="chooseYes()">Có 💖</button>
+    <button class="btn no" id="noBtn">Không 😢</button>
+  `;
+
+  const noBtn = document.getElementById("noBtn");
+  moveNoBtn(noBtn);
+
+  noBtn.addEventListener("mouseenter", () => moveNoBtn(noBtn));
+}
+
+function moveNoBtn(btn) {
+  btn.style.left = Math.random() * 200 - 100 + "px";
+  btn.style.top  = Math.random() * 100 + 40 + "px";
+}
+
+function chooseYes() {
+  const box = document.getElementById("box");
+  box.classList.add("shake");
+  box.innerHTML = "<h2>💘 Tôi biết màaa 💘</h2>";
+
+  heartInterval = setInterval(createHeart, 150);
+}
+
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (20 + Math.random() * 30) + "px";
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 4000);
+}
+</script>
+
+</body>
+</html>
+
+
